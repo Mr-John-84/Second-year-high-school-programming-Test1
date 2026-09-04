@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان على الدرس الأول / برمجة تانية ثانوى</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+            --error-color: #dc2626;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* شريط الوقت المثبت */
+        .timer-box {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: #ffffff;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .timer-box.warning {
+            border-color: var(--error-color);
+            color: var(--error-color);
+            background-color: #fef2f2;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .student-info {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+        }
+
+        .student-info label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .student-info input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #eff6ff;
+            color: var(--primary-color);
+            border-right: 4px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .question-card {
+            margin-bottom: 20px;
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .question-card.correct-card {
+            border-color: var(--success-color);
+            background-color: #f0fdf4;
+        }
+
+        .question-card.incorrect-card {
+            border-color: var(--error-color);
+            background-color: #fef2f2;
+        }
+
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .options-list li {
+            margin-bottom: 8px;
+        }
+
+        .options-list label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .options-list label:hover {
+            background-color: #f1f5f9;
+        }
+
+        .term-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-top: 8px;
+        }
+
+        .correct-answer-text {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #dcfce7;
+            color: #15803d;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .result-banner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #eff6ff;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .result-banner h2 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+        }
+
+        .score-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        .submit-btn:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #64748b;
+            direction: ltr;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="timer-box" id="timerBox">
+        <span>⏱️ الوقت المتبقي للاختبار:</span>
+        <span id="timerText">10:00</span>
+    </div>
+
+    <h1>امتحان على الدرس الأول / برمجة تانية ثانوى</h1>
+
+    <div id="resultBanner" class="result-banner">
+        <h2>نتيجة الاختبار</h2>
+        <div class="score-display" id="scoreText">0 / 15</div>
+    </div>
+
+    <form id="quizForm">
+        <div class="student-info">
+            <label for="studentName">اسم الطالب رباعي:</label>
+            <input type="text" id="studentName" name="studentName" placeholder="أدخل اسمك الكامل..." required>
+        </div>
+
+        <div class="section-title">أولاً: أسئلة الاختيار من متعدد (10 درجات)</div>
+        
+        <div class="question-card" id="card_mcq_1">
+            <div class="question-title">1. في أي فترة زمنية ظهرت الحواسيب الإلكترونية الضخمة (مثل ENIAC) التي استخدمت للأغراض العسكرية؟</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_1" value="السبعينيات - الثمانينيات" required> السبعينيات - الثمانينيات</label></li>
+                <li><label><input type="radio" name="mcq_1" value="الأربعينيات - الستينيات"> الأربعينيات - الستينيات</label></li>
+                <li><label><input type="radio" name="mcq_1" value="التسعينيات"> التسعينيات</label></li>
+                <li><label><input type="radio" name="mcq_1" value="العقد الأول من الألفية"> العقد الأول من الألفية</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_1">الإجابة الصحيحة: الأربعينيات - الستينيات</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_2">
+            <div class="question-title">2. ينص "قانون مور" على أن عدد الترانزستورات في الدائرة المتكاملة يتضاعف تقريباً كل:</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_2" value="عام واحد" required> عام واحد</label></li>
+                <li><label><input type="radio" name="mcq_2" value="عامين"> عامين</label></li>
+                <li><label><input type="radio" name="mcq_2" value="خمسة أعوام"> خمسة أعوام</label></li>
+                <li><label><input type="radio" name="mcq_2" value="عشرة أعوام"> عشرة أعوام</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_2">الإجابة الصحيحة: عامين</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_3">
+            <div class="question-title">3. أي من التقنيات التالية تتيح للمستخدمين "الانغماس" في بيئة افتراضية مولدة حاسوبياً بالكامل؟</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_3" value="الواقع المعزز (AR)" required> الواقع المعزز (AR)</label></li>
+                <li><label><input type="radio" name="mcq_3" value="الحوسبة الطرفية"> الحوسبة الطرفية</label></li>
+                <li><label><input type="radio" name="mcq_3" value="الواقع الافتراضي (VR)"> الواقع الافتراضي (VR)</label></li>
+                <li><label><input type="radio" name="mcq_3" value="التجارة الإلكترونية"> التجارة الإلكترونية</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_3">الإجابة الصحيحة: الواقع الافتراضي (VR)</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_4">
+            <div class="question-title">4. تعتمد السيارات ذاتية القيادة على "الحوسبة الطرفية" (Edge Computing) بشكل أساسي من أجل:</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_4" value="توفير استهلاك الوقود" required> توفير استهلاك الوقود</label></li>
+                <li><label><input type="radio" name="mcq_4" value="تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً"> تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً</label></li>
+                <li><label><input type="radio" name="mcq_4" value="الاتصال بشبكات التواصل الاجتماعي"> الاتصال بشبكات التواصل الاجتماعي</label></li>
+                <li><label><input type="radio" name="mcq_4" value="عرض إعلانات للمركبات المجاورة"> عرض إعلانات للمركبات المجاورة</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_4">الإجابة الصحيحة: تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_5">
+            <div class="question-title">5. المصطلح الذي يشير إلى نمط عمل يؤدي فيه الشخص مهامه من المنزل أو أي موقع آخر باستخدام الإنترنت هو:</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_5" value="التعلم عبر الإنترنت" required> التعلم عبر الإنترنت</label></li>
+                <li><label><input type="radio" name="mcq_5" value="العمل عن بُعد (Remote Work)"> العمل عن بُعد (Remote Work)</label></li>
+                <li><label><input type="radio" name="mcq_5" value="الدفع غير النقدي"> الدفع غير النقدي</label></li>
+                <li><label><input type="radio" name="mcq_5" value="الحوسبة السحابية"> الحوسبة السحابية</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_5">الإجابة الصحيحة: العمل عن بُعد (Remote Work)</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_6">
+            <div class="question-title">6. بدأ الانتشار الواسع والسريع للإنترنت عبر الهواتف المحمولة في فترة:</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_6" value="التسعينيات" required> التسعينيات</label></li>
+                <li><label><input type="radio" name="mcq_6" value="السبعينيات"> السبعينيات</label></li>
+                <li><label><input type="radio" name="mcq_6" value="العقد الأول من الألفية (ظهور الآيفون)"> العقد الأول من الألفية (ظهور الآيفون)</label></li>
+                <li><label><input type="radio" name="mcq_6" value="الأربعينيات"> الأربعينيات</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_6">الإجابة الصحيحة: العقد الأول من الألفية (ظهور الآيفون)</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_7">
+            <div class="question-title">7. تتميز "الكيوبيت" (Qubit) في الحوسبة الكمومية عن "البت" التقليدي بأنها:</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_7" value="تكون دائماً في حالة (0)" required> تكون دائماً في حالة (0)</label></li>
+                <li><label><input type="radio" name="mcq_7" value="تكون دائماً في حالة (1)"> تكون دائماً في حالة (1)</label></li>
+                <li><label><input type="radio" name="mcq_7" value="يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت"> يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت</label></li>
+                <li><label><input type="radio" name="mcq_7" value="تعمل فقط في الهواتف الذكية"> تعمل فقط في الهواتف الذكية</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_7">الإجابة الصحيحة: يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_8">
+            <div class="question-title">8. أي مما يلي يعد مثالاً على "الدفع غير النقدي" (Cashless Payment)؟</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_8" value="المقايضة بالسلع" required> المقايضة بالسلع</label></li>
+                <li><label><input type="radio" name="mcq_8" value="الدفع باستخدام العملات الورقية"> الدفع باستخدام العملات الورقية</label></li>
+                <li><label><input type="radio" name="mcq_8" value="استخدام رموز QR أو البطاقات المصرفية عبر الهاتف"> استخدام رموز QR أو البطاقات المصرفية عبر الهاتف</label></li>
+                <li><label><input type="radio" name="mcq_8" value="إرسال الطرود البريدية"> إرسال الطرود البريدية</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_8">الإجابة الصحيحة: استخدام رموز QR أو البطاقات المصرفية عبر الهاتف</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_9">
+            <div class="question-title">9. ظهرت "الحوسبة السحابية" وتحليل البيانات الضخمة (Big Data) كتوجه رئيسي في فترة:</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_9" value="التسعينيات" required> التسعينيات</label></li>
+                <li><label><input type="radio" name="mcq_9" value="العقد الثاني من الألفية فصاعداً"> العقد الثاني من الألفية فصاعداً</label></li>
+                <li><label><input type="radio" name="mcq_9" value="الثمانينيات"> الثمانينيات</label></li>
+                <li><label><input type="radio" name="mcq_9" value="الستينيات"> الستينيات</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_9">الإجابة الصحيحة: العقد الثاني من الألفية فصاعداً</div>
+        </div>
+
+        <div class="question-card" id="card_mcq_10">
+            <div class="question-title">10. يواجه استمرار تصغير مكونات الدوائر الإلكترونية تحديات فيزيائية تؤدي لتباطؤ قانون مور، منها:</div>
+            <ul class="options-list">
+                <li><label><input type="radio" name="mcq_10" value="زيادة حجم الشاشات" required> زيادة حجم الشاشات</label></li>
+                <li><label><input type="radio" name="mcq_10" value="تأثيرات كمومية مثل النفق الكمومي وازدياد تيارات التسرب"> تأثيرات كمومية مثل "النفق الكمومي" وازدياد تيارات التسرب</label></li>
+                <li><label><input type="radio" name="mcq_10" value="نقص في سرعة الإنترنت"> نقص في سرعة الإنترنت</label></li>
+                <li><label><input type="radio" name="mcq_10" value="قلة عدد المبرمجين"> قلة عدد المبرمجين</label></li>
+            </ul>
+            <div class="correct-answer-text" id="ans_mcq_10">الإجابة الصحيحة: تأثيرات كمومية مثل "النفق الكمومي" وازدياد تيارات التسرب</div>
+        </div>
+
+        <div class="section-title">ثانياً: اكتب المصطلح العلمي (5 درجات)</div>
+
+        <div class="question-card" id="card_term_1">
+            <div class="question-title">1. ملاحظة تجريبية تصف اتجاهاً تاريخياً يتضاعف فيه عدد الترانزستورات في الدوائر المتكاملة بمعدل يقارب الضعف كل عامين تقريباً.</div>
+            <input type="text" name="term_1" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
+            <div class="correct-answer-text" id="ans_term_1">الإجابة الصحيحة: قانون مور</div>
+        </div>
+
+        <div class="question-card" id="card_term_2">
+            <div class="question-title">2. تقنية تتيح معالجة البيانات محلياً على الجهاز نفسه (مثل المركبات ذاتية القيادة) فوراً، بدلاً من إرسالها إلى السحابة بهدف تقليل زمن الاستجابة.</div>
+            <input type="text" name="term_2" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
+            <div class="correct-answer-text" id="ans_term_2">الإجابة الصحيحة: الحوسبة الطرفية</div>
+        </div>
+
+        <div class="question-card" id="card_term_3">
+            <div class="question-title">3. تقنية تضيف عناصر أو معلومات رقمية إلى مشهد من العالم الحقيقي المحيط بنا.</div>
+            <input type="text" name="term_3" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
+            <div class="correct-answer-text" id="ans_term_3">الإجابة الصحيحة: الواقع المعزز</div>
+        </div>
+
+        <div class="question-card" id="card_term_4">
+            <div class="question-title">4. وحدة البناء الأساسية للحاسوب الكمومي، وتتميز بقدرتها على أن تكون في حالة مزيج من (0) و(1) في نفس الوقت بفضل مبدأ التراكب.</div>
+            <input type="text" name="term_4" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
+            <div class="correct-answer-text" id="ans_term_4">الإجابة الصحيحة: الكيوبيت</div>
+        </div>
+
+        <div class="question-card" id="card_term_5">
+            <div class="question-title">5. نظام يتيح دفع قيمة السلع أو الخدمات بوسائل رقمية غير نقدية، مثل تطبيقات الهاتف أو رموز QR أو البطاقات المصرفية.</div>
+            <input type="text" name="term_5" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
+            <div class="correct-answer-text" id="ans_term_5">الإجابة الصحيحة: الدفع غير النقدي</div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">إنهاء واحتساب الدرجة</button>
+    </form>
+
+    <footer class="footer">
+        Design and development by Mr. John Wagdy 2026
+    </footer>
+</div>
+
+<script>
+    const GOOGLE_SCRIPT_URL = 'ضع_الرابط_المستخرج_من_جوجل_شيت_هنا';
+
+    const modelAnswers = {
+        mcq_1: "الأربعينيات - الستينيات",
+        mcq_2: "عامين",
+        mcq_3: "الواقع الافتراضي (VR)",
+        mcq_4: "تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً",
+        mcq_5: "العمل عن بُعد (Remote Work)",
+        mcq_6: "العقد الأول من الألفية (ظهور الآيفون)",
+        mcq_7: "يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت",
+        mcq_8: "استخدام رموز QR أو البطاقات المصرفية عبر الهاتف",
+        mcq_9: "العقد الثاني من الألفية فصاعداً",
+        mcq_10: "تأثيرات كمومية مثل النفق الكمومي وازدياد تيارات التسرب",
+        term_1: "قانون مور",
+        term_2: "الحوسبة الطرفية",
+        term_3: "الواقع المعزز",
+        term_4: "الكيوبيت",
+        term_5: "الدفع غير النقدي"
+    };
+
+    // إعداد العداد التنازلي لمدة 10 دقائق (600 ثانية)
+    let totalSeconds = 10 * 60;
+    let timerInterval = null;
+
+    function startTimer() {
+        const timerText = document.getElementById('timerText');
+        const timerBox = document.getElementById('timerBox');
+
+        timerInterval = setInterval(() => {
+            totalSeconds--;
+
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = totalSeconds % 60;
+
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            timerText.innerText = `${minutes}:${seconds}`;
+
+            // التنبيه باللون الأحمر عند متبقي دقيقتين
+            if (totalSeconds <= 120) {
+                timerBox.classList.add('warning');
+            }
+
+            // انتهاء الوقت وتسليم الإجابات تلقائياً
+            if (totalSeconds <= 0) {
+                clearInterval(timerInterval);
+                alert('⏰ انتهى الوقت المحدد للاختبار (10 دقائق)! سيتم تسليم إجاباتك تلقائياً.');
+                
+                // إلغاء شرط الحقول الإلزامية حتى يتم التسليم التلقائي بدون منع
+                const requiredInputs = document.querySelectorAll('[required]');
+                requiredInputs.forEach(input => input.removeAttribute('required'));
+
+                document.getElementById('quizForm').requestSubmit();
+            }
+        }, 1000);
+    }
+
+    // تشغيل العداد فور فتح الصفحة
+    window.onload = startTimer;
+
+    function cleanText(text) {
+        if (!text) return "";
+        return text.trim()
+            .replace(/[أإآ]/g, "ا")
+            .replace(/ة/g, "ه")
+            .replace(/\s+/g, " ");
+    }
+
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // إيقاف العداد عند التسليم
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+
+        let score = 0;
+        const totalScore = 15;
+        const formData = new FormData(this);
+        const studentAnswers = {};
+
+        for (let key in modelAnswers) {
+            const studentVal = formData.get(key) || "";
+            studentAnswers[key] = studentVal;
+
+            const card = document.getElementById(`card_${key}`);
+            const correctTextDiv = document.getElementById(`ans_${key}`);
+
+            let isCorrect = false;
+
+            if (key.startsWith('mcq_')) {
+                isCorrect = (studentVal === modelAnswers[key]);
+            } else {
+                isCorrect = (cleanText(studentVal) === cleanText(modelAnswers[key]));
+            }
+
+            if (isCorrect) {
+                score++;
+                card.classList.add('correct-card');
+                card.classList.remove('incorrect-card');
+                correctTextDiv.style.display = 'none';
+            } else {
+                card.classList.add('incorrect-card');
+                card.classList.remove('correct-card');
+                correctTextDiv.style.display = 'block';
+            }
+        }
+
+        document.getElementById('scoreText').innerText = `${score} / ${totalScore}`;
+        document.getElementById('resultBanner').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'تم إرسال الإجابات وترحيلها';
+
+        const payload = {
+            studentName: formData.get('studentName') || "طالب غير مسجل الاسم",
+            score: `${score} / ${totalScore}`,
+            answers: studentAnswers,
+            timestamp: new Date().toLocaleString('ar-EG')
+        };
+
+        if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbw3rioaSXIxUJZVaCzUKA1F3KF7HrWcg39LkFhrrj2OOZ5xmgjkaXBKPeCIxVVA_Pv0/exec') {
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                console.log('تم إرسال البيانات إلى Google Sheets بنجاح');
+            }).catch(err => console.error('خطأ في الإرسال:', err));
+        }
+    });
+</script>
+
+</body>
+</html>
