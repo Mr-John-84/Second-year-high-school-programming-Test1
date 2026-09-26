@@ -1,547 +1,763 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>امتحان على الدرس الأول / برمجة تانية ثانوى</title>
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-            --success-color: #16a34a;
-            --error-color: #dc2626;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختيار من متعدد على الوحدة الأولى (25 سؤال)</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --border: #cbd5e1;
+      --success: #16a34a;
+      --error: #dc2626;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            direction: rtl;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-top: 80px;
+      padding-bottom: 40px;
+      display: flex;
+      justify-content: center;
+    }
 
-        /* شريط الوقت المثبت */
-        .timer-box {
-            position: sticky;
-            top: 15px;
-            z-index: 100;
-            background-color: #ffffff;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
+    /* العداد الزمني العائم */
+    .timer-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 25px;
+      z-index: 1000;
+      border-bottom: 3px solid var(--primary);
+    }
 
-        .timer-box.warning {
-            border-color: var(--error-color);
-            color: var(--error-color);
-            background-color: #fef2f2;
-            animation: pulse 1s infinite;
-        }
+    .timer-title {
+      font-weight: bold;
+      font-size: 1.05rem;
+    }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
+    .timer-clock {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary);
+      background: #eff6ff;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid #bfdbfe;
+      letter-spacing: 1px;
+    }
 
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
-        }
+    .timer-clock.danger {
+      color: var(--error);
+      background: #fef2f2;
+      border-color: #fecaca;
+      animation: pulse 1s infinite;
+    }
 
-        .student-info {
-            margin-bottom: 25px;
-            padding: 15px;
-            background-color: #f1f5f9;
-            border-radius: 8px;
-        }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
 
-        .student-info label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+    .quiz-container {
+      width: 100%;
+      max-width: 850px;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
 
-        .student-info input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
 
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-top: 35px;
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            background-color: #eff6ff;
-            color: var(--primary-color);
-            border-right: 4px solid var(--primary-color);
-            border-radius: 4px;
-        }
+    .header h1 {
+      color: var(--primary);
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
 
-        .question-card {
-            margin-bottom: 20px;
-            padding: 18px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: #fff;
-            transition: all 0.3s ease;
-        }
+    .form-group {
+      margin-bottom: 25px;
+    }
 
-        .question-card.correct-card {
-            border-color: var(--success-color);
-            background-color: #f0fdf4;
-        }
+    label.field-label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
 
-        .question-card.incorrect-card {
-            border-color: var(--error-color);
-            background-color: #fef2f2;
-        }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
 
-        .question-title {
-            font-weight: 600;
-            margin-bottom: 12px;
-            line-height: 1.6;
-        }
+    input[type="text"]:focus {
+      border-color: var(--primary);
+    }
 
-        .options-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
+    .question-card {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
 
-        .options-list li {
-            margin-bottom: 8px;
-        }
+    .question-title {
+      font-weight: bold;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      line-height: 1.6;
+      color: #1e293b;
+    }
 
-        .options-list label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-        }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.98rem;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      transition: background 0.2s;
+      line-height: 1.5;
+    }
 
-        .options-list label:hover {
-            background-color: #f1f5f9;
-        }
+    .option:hover {
+      background: #f1f5f9;
+    }
 
-        .term-input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-            font-family: inherit;
-            box-sizing: border-box;
-            margin-top: 8px;
-        }
+    .option input[type="radio"] {
+      margin-left: 12px;
+      margin-top: 3px;
+      accent-color: var(--primary);
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
 
-        .correct-answer-text {
-            display: none;
-            margin-top: 10px;
-            padding: 8px 12px;
-            background-color: #dcfce7;
-            color: #15803d;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
+    button.submit-btn {
+      width: 100%;
+      padding: 15px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: background-color 0.2s;
+    }
 
-        .result-banner {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            background-color: #eff6ff;
-            border: 2px solid var(--primary-color);
-            border-radius: 10px;
-            margin-bottom: 25px;
-        }
+    button.submit-btn:hover {
+      background-color: var(--primary-dark);
+    }
 
-        .result-banner h2 {
-            margin: 0 0 10px 0;
-            color: var(--primary-color);
-        }
+    button.submit-btn:disabled {
+      background-color: #94a3b8;
+      cursor: not-allowed;
+    }
 
-        .score-display {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
+    /* كارت نتيجة الاختبار */
+    .result-card {
+      display: none;
+      text-align: center;
+      padding: 30px;
+      background: #f0fdf4;
+      border: 2px solid var(--success);
+      border-radius: 12px;
+      margin-top: 20px;
+    }
 
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 30px;
-        }
+    .result-card.fail {
+      background: #fef2f2;
+      border-color: var(--error);
+    }
 
-        .submit-btn:disabled {
-            background-color: #94a3b8;
-            cursor: not-allowed;
-        }
+    .result-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-        .footer {
-            text-align: center;
-            margin-top: 35px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.9rem;
-            color: #64748b;
-            direction: ltr;
-        }
-    </style>
+    .result-score {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 15px 0;
+    }
+
+    .result-details {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    .review-list {
+      text-align: right;
+      margin-top: 20px;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 15px;
+    }
+
+    .review-item {
+      padding: 14px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .review-item.correct {
+      background: #dcfce7;
+      color: #15803d;
+      border-right: 5px solid var(--success);
+    }
+
+    .review-item.incorrect {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-right: 5px solid var(--error);
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="timer-box" id="timerBox">
-        <span>⏱️ الوقت المتبقي للاختبار:</span>
-        <span id="timerText">10:00</span>
+  <!-- شريط العداد الزمني -->
+  <div class="timer-bar">
+    <span class="timer-title">⏱️ الوقت المتبقي للاختبار:</span>
+    <span id="timerClock" class="timer-clock">10:00</span>
+  </div>
+
+  <div class="quiz-container">
+    <div class="header">
+      <h1>اختيار من متعدد على الوحدة الأولى برمجة تانية ثانوى</h1>
+      <p>زمن الاختبار: 10 دقائق | عدد الأسئلة: 25 سؤال اختيار من متعدد (25 درجة)</p>
     </div>
 
-    <h1>امتحان على الدرس الأول / برمجة تانية ثانوى</h1>
-
-    <div id="resultBanner" class="result-banner">
-        <h2>نتيجة الاختبار</h2>
-        <div class="score-display" id="scoreText">0 / 15</div>
+    <!-- كارت النتيجة النهائية -->
+    <div id="resultCard" class="result-card">
+      <div id="resultTitle" class="result-title">تم إنهاء الاختبار بنجاح!</div>
+      <div id="resultScore" class="result-score">0 / 25</div>
+      <div id="resultDetails" class="result-details">النسبة المئوية: 0%</div>
+      <div id="reviewContainer" class="review-list"></div>
     </div>
 
     <form id="quizForm">
-        <div class="student-info">
-            <label for="studentName">اسم الطالب رباعي:</label>
-            <input type="text" id="studentName" name="studentName" placeholder="أدخل اسمك الكامل..." required>
-        </div>
+      <!-- بيانات الطالب -->
+      <div class="form-group">
+        <label class="field-label" for="studentName">الاسم بالكامل:</label>
+        <input type="text" id="studentName" name="studentName" placeholder="أدخل اسمك الثلاثي" required>
+      </div>
 
-        <div class="section-title">أولاً: أسئلة الاختيار من متعدد (10 درجات)</div>
-        
-        <div class="question-card" id="card_mcq_1">
-            <div class="question-title">1. في أي فترة زمنية ظهرت الحواسيب الإلكترونية الضخمة (مثل ENIAC) التي استخدمت للأغراض العسكرية؟</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_1" value="السبعينيات - الثمانينيات" required> السبعينيات - الثمانينيات</label></li>
-                <li><label><input type="radio" name="mcq_1" value="الأربعينيات - الستينيات"> الأربعينيات - الستينيات</label></li>
-                <li><label><input type="radio" name="mcq_1" value="التسعينيات"> التسعينيات</label></li>
-                <li><label><input type="radio" name="mcq_1" value="العقد الأول من الألفية"> العقد الأول من الألفية</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_1">الإجابة الصحيحة: الأربعينيات - الستينيات</div>
-        </div>
+      <!-- حاوية الأسئلة الـ 25 -->
+      <div id="questionsContainer"></div>
 
-        <div class="question-card" id="card_mcq_2">
-            <div class="question-title">2. ينص "قانون مور" على أن عدد الترانزستورات في الدائرة المتكاملة يتضاعف تقريباً كل:</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_2" value="عام واحد" required> عام واحد</label></li>
-                <li><label><input type="radio" name="mcq_2" value="عامين"> عامين</label></li>
-                <li><label><input type="radio" name="mcq_2" value="خمسة أعوام"> خمسة أعوام</label></li>
-                <li><label><input type="radio" name="mcq_2" value="عشرة أعوام"> عشرة أعوام</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_2">الإجابة الصحيحة: عامين</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_3">
-            <div class="question-title">3. أي من التقنيات التالية تتيح للمستخدمين "الانغماس" في بيئة افتراضية مولدة حاسوبياً بالكامل؟</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_3" value="الواقع المعزز (AR)" required> الواقع المعزز (AR)</label></li>
-                <li><label><input type="radio" name="mcq_3" value="الحوسبة الطرفية"> الحوسبة الطرفية</label></li>
-                <li><label><input type="radio" name="mcq_3" value="الواقع الافتراضي (VR)"> الواقع الافتراضي (VR)</label></li>
-                <li><label><input type="radio" name="mcq_3" value="التجارة الإلكترونية"> التجارة الإلكترونية</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_3">الإجابة الصحيحة: الواقع الافتراضي (VR)</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_4">
-            <div class="question-title">4. تعتمد السيارات ذاتية القيادة على "الحوسبة الطرفية" (Edge Computing) بشكل أساسي من أجل:</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_4" value="توفير استهلاك الوقود" required> توفير استهلاك الوقود</label></li>
-                <li><label><input type="radio" name="mcq_4" value="تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً"> تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً</label></li>
-                <li><label><input type="radio" name="mcq_4" value="الاتصال بشبكات التواصل الاجتماعي"> الاتصال بشبكات التواصل الاجتماعي</label></li>
-                <li><label><input type="radio" name="mcq_4" value="عرض إعلانات للمركبات المجاورة"> عرض إعلانات للمركبات المجاورة</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_4">الإجابة الصحيحة: تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_5">
-            <div class="question-title">5. المصطلح الذي يشير إلى نمط عمل يؤدي فيه الشخص مهامه من المنزل أو أي موقع آخر باستخدام الإنترنت هو:</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_5" value="التعلم عبر الإنترنت" required> التعلم عبر الإنترنت</label></li>
-                <li><label><input type="radio" name="mcq_5" value="العمل عن بُعد (Remote Work)"> العمل عن بُعد (Remote Work)</label></li>
-                <li><label><input type="radio" name="mcq_5" value="الدفع غير النقدي"> الدفع غير النقدي</label></li>
-                <li><label><input type="radio" name="mcq_5" value="الحوسبة السحابية"> الحوسبة السحابية</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_5">الإجابة الصحيحة: العمل عن بُعد (Remote Work)</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_6">
-            <div class="question-title">6. بدأ الانتشار الواسع والسريع للإنترنت عبر الهواتف المحمولة في فترة:</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_6" value="التسعينيات" required> التسعينيات</label></li>
-                <li><label><input type="radio" name="mcq_6" value="السبعينيات"> السبعينيات</label></li>
-                <li><label><input type="radio" name="mcq_6" value="العقد الأول من الألفية (ظهور الآيفون)"> العقد الأول من الألفية (ظهور الآيفون)</label></li>
-                <li><label><input type="radio" name="mcq_6" value="الأربعينيات"> الأربعينيات</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_6">الإجابة الصحيحة: العقد الأول من الألفية (ظهور الآيفون)</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_7">
-            <div class="question-title">7. تتميز "الكيوبيت" (Qubit) في الحوسبة الكمومية عن "البت" التقليدي بأنها:</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_7" value="تكون دائماً في حالة (0)" required> تكون دائماً في حالة (0)</label></li>
-                <li><label><input type="radio" name="mcq_7" value="تكون دائماً في حالة (1)"> تكون دائماً في حالة (1)</label></li>
-                <li><label><input type="radio" name="mcq_7" value="يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت"> يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت</label></li>
-                <li><label><input type="radio" name="mcq_7" value="تعمل فقط في الهواتف الذكية"> تعمل فقط في الهواتف الذكية</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_7">الإجابة الصحيحة: يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_8">
-            <div class="question-title">8. أي مما يلي يعد مثالاً على "الدفع غير النقدي" (Cashless Payment)؟</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_8" value="المقايضة بالسلع" required> المقايضة بالسلع</label></li>
-                <li><label><input type="radio" name="mcq_8" value="الدفع باستخدام العملات الورقية"> الدفع باستخدام العملات الورقية</label></li>
-                <li><label><input type="radio" name="mcq_8" value="استخدام رموز QR أو البطاقات المصرفية عبر الهاتف"> استخدام رموز QR أو البطاقات المصرفية عبر الهاتف</label></li>
-                <li><label><input type="radio" name="mcq_8" value="إرسال الطرود البريدية"> إرسال الطرود البريدية</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_8">الإجابة الصحيحة: استخدام رموز QR أو البطاقات المصرفية عبر الهاتف</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_9">
-            <div class="question-title">9. ظهرت "الحوسبة السحابية" وتحليل البيانات الضخمة (Big Data) كتوجه رئيسي في فترة:</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_9" value="التسعينيات" required> التسعينيات</label></li>
-                <li><label><input type="radio" name="mcq_9" value="العقد الثاني من الألفية فصاعداً"> العقد الثاني من الألفية فصاعداً</label></li>
-                <li><label><input type="radio" name="mcq_9" value="الثمانينيات"> الثمانينيات</label></li>
-                <li><label><input type="radio" name="mcq_9" value="الستينيات"> الستينيات</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_9">الإجابة الصحيحة: العقد الثاني من الألفية فصاعداً</div>
-        </div>
-
-        <div class="question-card" id="card_mcq_10">
-            <div class="question-title">10. يواجه استمرار تصغير مكونات الدوائر الإلكترونية تحديات فيزيائية تؤدي لتباطؤ قانون مور، منها:</div>
-            <ul class="options-list">
-                <li><label><input type="radio" name="mcq_10" value="زيادة حجم الشاشات" required> زيادة حجم الشاشات</label></li>
-                <li><label><input type="radio" name="mcq_10" value="تأثيرات كمومية مثل النفق الكمومي وازدياد تيارات التسرب"> تأثيرات كمومية مثل "النفق الكمومي" وازدياد تيارات التسرب</label></li>
-                <li><label><input type="radio" name="mcq_10" value="نقص في سرعة الإنترنت"> نقص في سرعة الإنترنت</label></li>
-                <li><label><input type="radio" name="mcq_10" value="قلة عدد المبرمجين"> قلة عدد المبرمجين</label></li>
-            </ul>
-            <div class="correct-answer-text" id="ans_mcq_10">الإجابة الصحيحة: تأثيرات كمومية مثل "النفق الكمومي" وازدياد تيارات التسرب</div>
-        </div>
-
-        <div class="section-title">ثانياً: اكتب المصطلح العلمي (5 درجات)</div>
-
-        <div class="question-card" id="card_term_1">
-            <div class="question-title">1. ملاحظة تجريبية تصف اتجاهاً تاريخياً يتضاعف فيه عدد الترانزستورات في الدوائر المتكاملة بمعدل يقارب الضعف كل عامين تقريباً.</div>
-            <input type="text" name="term_1" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
-            <div class="correct-answer-text" id="ans_term_1">الإجابة الصحيحة: قانون مور</div>
-        </div>
-
-        <div class="question-card" id="card_term_2">
-            <div class="question-title">2. تقنية تتيح معالجة البيانات محلياً على الجهاز نفسه (مثل المركبات ذاتية القيادة) فوراً، بدلاً من إرسالها إلى السحابة بهدف تقليل زمن الاستجابة.</div>
-            <input type="text" name="term_2" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
-            <div class="correct-answer-text" id="ans_term_2">الإجابة الصحيحة: الحوسبة الطرفية</div>
-        </div>
-
-        <div class="question-card" id="card_term_3">
-            <div class="question-title">3. تقنية تضيف عناصر أو معلومات رقمية إلى مشهد من العالم الحقيقي المحيط بنا.</div>
-            <input type="text" name="term_3" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
-            <div class="correct-answer-text" id="ans_term_3">الإجابة الصحيحة: الواقع المعزز</div>
-        </div>
-
-        <div class="question-card" id="card_term_4">
-            <div class="question-title">4. وحدة البناء الأساسية للحاسوب الكمومي، وتتميز بقدرتها على أن تكون في حالة مزيج من (0) و(1) في نفس الوقت بفضل مبدأ التراكب.</div>
-            <input type="text" name="term_4" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
-            <div class="correct-answer-text" id="ans_term_4">الإجابة الصحيحة: الكيوبيت</div>
-        </div>
-
-        <div class="question-card" id="card_term_5">
-            <div class="question-title">5. نظام يتيح دفع قيمة السلع أو الخدمات بوسائل رقمية غير نقدية، مثل تطبيقات الهاتف أو رموز QR أو البطاقات المصرفية.</div>
-            <input type="text" name="term_5" class="term-input" placeholder="اكتب المصطلح العلمي هنا..." required>
-            <div class="correct-answer-text" id="ans_term_5">الإجابة الصحيحة: الدفع غير النقدي</div>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">إنهاء واحتساب الدرجة</button>
+      <button type="submit" id="submitBtn" class="submit-btn">إرسال الاختبار وإنهاء التقييم</button>
     </form>
+  </div>
 
-    <footer class="footer">
-        Design and development by Mr. John Wagdy 2026
-    </footer>
-</div>
+  <script>
+    // ⚠️ استبدل النص التالي بين التنصيص برابط Web App الخاص بك من Google Apps Script
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwm3nJXZZVoEgEscgE26ULHAN3yEyPg6IScjzyphMOtNrlWYb-HEUtMhZetHpNgf3ro/exec";
 
-<script>
-    const GOOGLE_SCRIPT_URL = 'ضع_الرابط_المستخرج_من_جوجل_شيت_هنا';
+    // =========================================================
+    // 📝 قائمة الأسئلة الـ 25 بالكامل مع الخيارات والإجابات النموذجية
+    // =========================================================
+    let questionsData = [
+      {
+        id: 1,
+        title: "أي مما يلي يُعد الوصف الأدق لطبيعة \"قانون مور\" (Moore's Law) والحدود التي يواجهها حالياً؟",
+        options: [
+          "قانون فيزيائي حتمي يفرض مضاعفة سرعة المعالجات كل عامين، ويتوقف بسبب تكلفة التصنيع.",
+          "ملاحظة تجريبية تنص على مضاعفة عدد الترانسزيستورات كل عامين تقريباً، وتواجه تباطؤاً بسبب عقبات هندسية وفيزيائية كظاهرة التسرب والأنفاق الكمومية.",
+          "قاعدة رياضية تؤكد أن الحوسبة الكمومية ستستبدل الحواسيب التقليدية بالكامل في جميع أنواع الحسابات.",
+          "قانون اقتصادي ينص على انخفاض أسعار الهواتف الذكية بالنصف كل سنتين مع انتشار الحوسبة السحابية."
+        ],
+        answer: "ملاحظة تجريبية تنص على مضاعفة عدد الترانسزيستورات كل عامين تقريباً، وتواجه تباطؤاً بسبب عقبات هندسية وفيزيائية كظاهرة التسرب والأنفاق الكمومية."
+      },
+      {
+        id: 2,
+        title: "ترغب إحدى شركات السيارات الذكية في اتخاذ قرارات قيادة فورية أثناء السير دون الاعتماد على شبكة الإنترنت لتفادي أخطار التأخير في الاستجابة (Latency). ما التقنية الأنسب التي تعتمد عليها المركبة حاسوبياً؟",
+        options: [
+          "الحوسبة السحابية المركزية (Cloud Computing).",
+          "الحوسبة الكمومية (Quantum Computing).",
+          "الحوسبة الطرفية (Edge Computing) لمعالجة البيانات محلياً على الجهاز.",
+          "الواقع الافتراضي الكامل (Virtual Reality)."
+        ],
+        answer: "الحوسبة الطرفية (Edge Computing) لمعالجة البيانات محلياً على الجهاز."
+      },
+      {
+        id: 3,
+        title: "ما الترتيب الزمني الصحيح للتحولات والتطورات التقنية في تاريخ تكنولوجيا المعلومات بدءاً من الأقدم إلى الأحدث؟",
+        options: [
+          "الحواسيب الشخصية (PCs) ⬅ ظهور الهواتف الذكية ⬅ ظهور الويب والتسويق التجاري ⬅ انتشار الحوسبة السحابية.",
+          "ظهور الحواسيب الإلكترونية (ENIAC) ⬅ ظهور الحواسيب الشخصية ⬅ إتاحة الإنترنت للاستخدام التجاري ⬅ انتشار الهواتف الذكية ⬅ انتشار الحوسبة السحابية.",
+          "التسويق الإلكتروني ⬅ ظهور الصمامات المفرغة ⬅ شبكات التواصل الاجتماعي ⬅ ظهور الهواتف الذكية.",
+          "الحوسبة السحابية ⬅ ظهور الحواسيب الشخصية ⬅ ظهور ENIAC ⬅ الدفع غير النقدي عبر QR."
+        ],
+        answer: "ظهور الحواسيب الإلكترونية (ENIAC) ⬅ ظهور الحواسيب الشخصية ⬅ إتاحة الإنترنت للاستخدام التجاري ⬅ انتشار الهواتف الذكية ⬅ انتشار الحوسبة السحابية."
+      },
+      {
+        id: 4,
+        title: "ما الفرق الجوهري بين \"الواقع المعزز (AR)\" و\"الواقع الافتراضي (VR)\"؟",
+        options: [
+          "الواقع المعزز يضع المستخدم بالكامل في بيئة افتراضية مولدة حاسوبياً، بينما الواقع الافتراضي يضيف عناصر رقمية للعالم الحقيقي.",
+          "الواقع المعزز يضيف عناصر أو معلومات رقمية فوق مشهد من العالم الحقيقي، بينما الواقع الافتراضي يضع المستخدم داخل بيئة افتراضية مولدة حاسوبياً بالكامل.",
+          "الواقع المعزز يعتمد حصرياً على الحوسبة الكمومية، بينما الواقع الافتراضي يعتمد على الحوسبة الطرفية.",
+          "لا يوجد فرق بينهما سوى أن VR يُستخدم في الهواتف الذكية بينما AR يُستخدم في نظارات الرأس فقط."
+        ],
+        answer: "الواقع المعزز يضيف عناصر أو معلومات رقمية فوق مشهد من العالم الحقيقي، بينما الواقع الافتراضي يضع المستخدم داخل بيئة افتراضية مولدة حاسوبياً بالكامل."
+      },
+      {
+        id: 5,
+        title: "تُعرف \"الحوسبة الكمومية\" (Quantum Computing) بأنها نهج يستفيد من خصائص ميكانيكا الكم كالكيوِبت (Qubit) والتراكب. ما النتيجة الدقيقة لاستخدامها مقارنة بالحواسيب التقليدية؟",
+        options: [
+          "تسريع جميع أنواع الحسابات والمعالجات دون استثناء بنسبة 100%.",
+          "تقديم بديل مباشر وشامل لجميع الحواسيب التقليدية والهواتف الذكية.",
+          "توفير تفوق حاسوبي واختراق في فئات محددة وخاصة من المسائل والمعادلات، لكنها لا تُسرّع كافة الحسابات ولا تُعد بديلاً عاماً للجميع.",
+          "إلغاء الحاجة لبيانات التدريب والشبكات العصبية في الذكاء الاصطناعي."
+        ],
+        answer: "توفير تفوق حاسوبي واختراق في فئات محددة وخاصة من المسائل والمعادلات، لكنها لا تُسرّع كافة الحسابات ولا تُعد بديلاً عاماً للجميع."
+      },
+      {
+        id: 6,
+        title: "ما التحول الاجتماعي والتقني الذي يتيح إجراء المعاملات والمدفوعات المالية وشراء السلع عبر تطبيقات الهاتف أو رموز QR دون استخدام النقود الورقية والمعدنية؟",
+        options: [
+          "التجارة الإلكترونية فقط (E-commerce).",
+          "العمل عن بُعد (Remote Work).",
+          "الدفع غير النقدي (Cashless Payment).",
+          "شبكات التواصل الاجتماعي (SNS)."
+        ],
+        answer: "الدفع غير النقدي (Cashless Payment)."
+      },
+      {
+        id: 7,
+        title: "أي العبارات التالية تصف بدقة العلاقة المفهومية والتسلسلية بين الذكاء الاصطناعي (AI)، والتعلم الآلي (ML)، والتعلم العميق (DL)، والذكاء الاصطناعي التوليدي (GenAI)؟",
+        options: [
+          "GenAI هو المجال الأوسع الذي يحتوي داخل طياته DL، ثم ML، وأخيراً AI.",
+          "AI هو المجال العام، ويقع ML ضمنه كفرع يتعلم الأنماط من البيانات، وDL هو نوع متقدم من ML يستخدم شبكات عصبية متعددة الطبقات، بينما GenAI يعتمد على DL لتوليد محتوى جديد.",
+          "ML و DL تقنيتان منفصلتان تماماً ولا يوجد بينهما أي تداخل أو احتواء.",
+          "GenAI ينشئ محتوى جديداً دون الحاجة لاستخدام أساليب التعلم العميق أو بيانات التدريب."
+        ],
+        answer: "AI هو المجال العام، ويقع ML ضمنه كفرع يتعلم الأنماط من البيانات، وDL هو نوع متقدم من ML يستخدم شبكات عصبية متعددة الطبقات، بينما GenAI يعتمد على DL لتوليد محتوى جديد."
+      },
+      {
+        id: 8,
+        title: "عندما يقوم نظام ذكاء اصطناعي توليدي برسم صورة جديدة غير موجودة سابقاً أو كتابة نص بناءً على مطالبة (Prompt)، ما الذي يعتمد عليه النظام بالأساس؟",
+        options: [
+          "اتباع قواعد برمجية صريحة ومباشرة أُدخلت له يدوياً من المبرمجين.",
+          "البحث المباشر في المحرك ونقل صورة جاهزة ومطابقتها حرفياً من الإنترنت.",
+          "الاستناد إلى النماذج والأنماط التي تعلمها من بيانات التدريب الضخمة باستخدام نماذج التعلم العميق.",
+          "الوصول المباشر إلى الذاكرة البشرية واستخراج الأفكار منها."
+        ],
+        answer: "الاستناد إلى النماذج والأنماط التي تعلمها من بيانات التدريب الضخمة باستخدام نماذج التعلم العميق."
+      },
+      {
+        id: 9,
+        title: "ما المقصود بظاهرة \"الهلوسة\" (Hallucination) في نماذج الذكاء الاصطناعي التوليدي؟",
+        options: [
+          "توقف النظام عن العمل نتيجة كثرة الطلبات والمعالجات الضخمة.",
+          "إنتاج النظام لمخرجات ونصوص تبدو للوهلة الأولى معقولة ومصاغة بثقة لكنها في الحقيقة غير صحيحة أو غير مدعومة بالحقائق.",
+          "قدرة النظام على التنبؤ بالأحداث المستقبلية بدقة متناهية.",
+          "تحيز النظام ضد فئة معينة من المستخدمين بسبب بيانات التدريب."
+        ],
+        answer: "إنتاج النظام لمخرجات ونصوص تبدو للوهلة الأولى معقولة ومصاغة بثقة لكنها في الحقيقة غير صحيحة أو غير مدعومة بالحقائق."
+      },
+      {
+        id: 10,
+        title: "تتكون \"الشبكة العصبية الاصطناعية\" (ANN) من وحدات ترابط معالجة منسقة في طبقات، وتتميز بـ:",
+        options: [
+          "ثبات أوزان الترابط وعدم تغيرها إطلاقاً أثناء مرحلة التدريب.",
+          "استلهام فكرتها من العصبونات البيولوجية، وتغير أوزان ترابطها أثناء التدريب لتعلم الأنماط وإصدار أحكام معقدة.",
+          "قدرتها على اتخاذ قرارات أخلاقية مستقلة دون الحاجة لتقييم بشري.",
+          "اعتمادها على طبقة واحدة فقط دائماً لمعالجة كافة أنواع الصور والمعضلات."
+        ],
+        answer: "استلهام فكرتها من العصبونات البيولوجية، وتغير أوزان ترابطها أثناء التدريب لتعلم الأنماط وإصدار أحكام معقدة."
+      },
+      {
+        id: 11,
+        title: "أي الممارسات التالية تُعد مثالاً تطبيقياً يندرج تحت \"التعلم الآلي (ML)\" بالأساس لتصنيف البيانات والبحث عن أنماط دون توليد محتوى جديد؟",
+        options: [
+          "إنشاء مقطع صوتي ناطق بصوت شخصية شهيرة لم يتحدث به من قبل.",
+          "تصنيف البريد الإلكتروني تلقائياً إلى \"رسائل مرغوبة\" أو \"رسائل مزعجة (Spam)\" بناءً على أنماط الرسائل.",
+          "تأليف رواية خيالية كاملة باستخدام أحد نماذج المحادثة التوليدية.",
+          "توليد تصميم معماري جديد ثلاثي الأبعاد من وصف نصي."
+        ],
+        answer: "تصنيف البريد الإلكتروني تلقائياً إلى \"رسائل مرغوبة\" أو \"رسائل مزعجة (Spam)\" بناءً على أنماط الرسائل."
+      },
+      {
+        id: 12,
+        title: "لماذا يتطلب \"التعلم العميق (DL)\" قدرات حوسبة عالية جداً وبيانات ضخمة مقارنة بالتعلم الآلي التقليدي؟",
+        options: [
+          "لأنه يعتمد على القواعد المبرمجة صراحة والتي تتطلب آلاف السطور البرمجية.",
+          "لأنه يستخدم شبكات عصبية اصطناعية متعددة الطبقات لتعلم تمثيلات وأنماط معقدة للغاية من كميات هائلة من البيانات.",
+          "لأنه لا يتلقى أي تدريب على البيانات بل يعتمد على المصادفة.",
+          "لأنه يعمل فقط على الحواسيب الكمومية دون الحواسيب الفائقة التقليدية."
+        ],
+        answer: "لأنه يستخدم شبكات عصبية اصطناعية متعددة الطبقات لتعلم تمثيلات وأنماط معقدة للغاية من كميات هائلة من البيانات."
+      },
+      {
+        id: 13,
+        title: "تُستخدم \"أنظمة التوصية\" (Recommendation Systems) في منصات مثل يوتيوب وأمازون. كيف تحدد هذه الأنظمة ما تعرضه للمستخدم؟",
+        options: [
+          "عن طريق عرض أحدث الفيديوهات أو المنتجات المضافة للموقع بشكل عشوائي للجميع.",
+          "من خلال تحليل بيانات السلوك السابق للمستخدم وتفضيلاته للتنبؤ بما قد يناسبه وعرضه.",
+          "بواسطة تدخل بشري مباشر يحدد لكل مستخدم قائمته الخاصة يومياً.",
+          "عبر إجبار المستخدم على ملء استبيان ورقي قبل كل عملية مشاهدة أو شراء."
+        ],
+        answer: "من خلال تحليل بيانات السلوك السابق للمستخدم وتفضيلاته للتنبؤ بما قد يناسبه وعرضه."
+      },
+      {
+        id: 14,
+        title: "أي القطاعات الصناعية التالية يُمارس فيها الذكاء الاصطناعي دوراً حيوياً في \"التنبؤ بموعد الحصاد والكشف عن الآفات والأمراض\"؟",
+        options: [
+          "الخدمات اللوجستية (Logistics).",
+          "الرعاية الصحية (Healthcare).",
+          "الزراعة (Agriculture).",
+          "التصنيع (Manufacturing)."
+        ],
+        answer: "الزراعة (Agriculture)."
+      },
+      {
+        id: 15,
+        title: "يبرع الذكاء الاصطناعي في وظائف محددة، ولكنه يفتقر إلى قدرات أُخرى تجعل العنصر البشري ضرورياً. ما الصياغة الدقيقة لتوزيع الأدوار بينهما؟",
+        options: [
+          "يبرع الذكاء الاصطناعي في اتخاذ القرارات الأخلاقية النهائية، بينما يحتاج البشر لإيجاد الأنماط في البيانات.",
+          "يبرع الذكاء الاصطناعي في إيجاد الأنماط وتصنيف البيانات الضخمة، بينما يتطلب الأمر حكماً بشرياً في الأخلاق والخصوصية واتخاذ القرارات ذات المسؤولية.",
+          "يبرع الذكاء الاصطناعي في تحمل المساءلة القانونية، بينما يقتصر دور البشر على إدخال الشفرات البرمجية.",
+          "لا يوجد أي فارق في الإمكانيات بين الحكم البشري ومخرجات الخوارزميات."
+        ],
+        answer: "يبرع الذكاء الاصطناعي في إيجاد الأنماط وتصنيف البيانات الضخمة، بينما يتطلب الأمر حكماً بشرياً في الأخلاق والخصوصية واتخاذ القرارات ذات المسؤولية."
+      },
+      {
+        id: 16,
+        title: "ما هي \"مشكلة الصندوق الأسود\" (Black Box Problem) في تطبيقات الذكاء الاصطناعي؟",
+        options: [
+          "توقف شاشة الجهاز وتحولها للون الأسود عند التعرض لهجوم سيبراني.",
+          "تلف وحدات التخزين المركزية للسيرفرات الحسابية في السحابة.",
+          "صعوبة أو عدم وضوح كيفية وصول نظام الذكاء الاصطناعي إلى قرار أو حكم معين من بين البيانات.",
+          "عدم قدرة الكاميرات على الكشف عن الوجوه في الإضاءة الخافتة."
+        ],
+        answer: "صعوبة أو عدم وضوح كيفية وصول نظام الذكاء الاصطناعي إلى قرار أو حكم معين من بين البيانات."
+      },
+      {
+        id: 17,
+        title: "يستعين الأطباء بأنظمة الذكاء الاصطناعي لفحص الصور الشعاعية (الأشعة السينية) للكشف عن الأمراض. ما التصرف الصحيح الموصى به طبياً وأخلاقياً؟",
+        options: [
+          "الاعتماد الكلي والنهائي على تشخيص الذكاء الاصطناعي دون الحاجة لمراجعة الطبيب.",
+          "استخدام الذكاء الاصطناعي كأداة مساعدة للكشف عن الأنماط التي قد تفوت البشر، مع ضرورة تأكيد التشخيص النهائي من قِبل طبيب بشري.",
+          "إلغاء استخدام الذكاء الاصطناعي تماماً لأنه لا يمكنه قراءة الصور الطبقية.",
+          "ترك خيار التشخيص النهائي للمريض بناءً على التقرير الخوارزمي الصادر."
+        ],
+        answer: "استخدام الذكاء الاصطناعي كأداة مساعدة للكشف عن الأنماط التي قد تفوت البشر، مع ضرورة تأكيد التشخيص النهائي من قِبل طبيب بشري."
+      },
+      {
+        id: 18,
+        title: "تقنية \"الصيانة التنبؤية\" (Predictive Maintenance) المستخدمة في خطوط الإنتاج والمصانع تهدف بالأساس إلى:",
+        options: [
+          "التعرف على وجوه العمال أثناء الدخول والخروج من المصنع.",
+          "التنبؤ بأعطال الآلات والمعدات قبل وقوعها بناءً على تحليل البيانات والأنماط.",
+          "ترجمة أدلة التشغيل للآلات من اللغات الأجنبية تلقائياً.",
+          "تقليل أجور العمالة من خلال الاستغناء عن قسم الهواتف."
+        ],
+        answer: "التنبؤ بأعطال الآلات والمعدات قبل وقوعها بناءً على تحليل البيانات والأنماط."
+      },
+      {
+        id: 19,
+        title: "ينشأ \"التحيز الخوارزمي\" (Algorithmic Bias) في أنظمة الذكاء الاصطناعي نتيجة لعدة أسباب، باستثناء:",
+        options: [
+          "احتواء بيانات التدريب على نزعات تمييزية أو عدم تمثيلها لجميع الفئات بشكل كافٍ.",
+          "طريقة تصميم النظام أو طريقة استخدامه والسياق البشري والاجتماعي.",
+          "سرعة معالجة المعالج الحسابي للبيانات داخل الشريحة.",
+          "اختيار متغيرات غير مناسبة أو الاعتماد على متغير بديل يمثل سمة محمية بشكل غير مباشر."
+        ],
+        answer: "سرعة معالجة المعالج الحسابي للبيانات داخل الشريحة."
+      },
+      {
+        id: 20,
+        title: "قامت إحدى المؤسسات باستخدام نظام ذكاء اصطناعي لفرز طلبات التوظيف، فلاحظت أن النظام يستبعد المتقدمين من فئة معينة بانتظام رغم تكافئ مؤهلاتهم. أي مبدأ من المبادئ الأخلاقية الأربعة قد تم انتهاكه بشكل مباشر؟",
+        options: [
+          "مبدأ الخصوصية وحماية البيانات.",
+          "مبدأ العدالة (عدم التمييز ظلماً ضد أي شخص أو مجموعة).",
+          "مبدأ الصيانة التنبؤية.",
+          "مبدأ الاتصال المباشر."
+        ],
+        answer: "مبدأ العدالة (عدم التمييز ظلماً ضد أي شخص أو مجموعة)."
+      },
+      {
+        id: 21,
+        title: "ما المقصود بـ \"الذكاء الاصطناعي القابل للتفسير\" (Explainable AI - XAI) وما أهميته الأخلاقية؟",
+        options: [
+          "تقنية تتيح للنظام ترجمة النصوص من لغة إلى أخرى بسهولة.",
+          "تقنيات تتيح للبشر فهم أسباب وكيفية اتخاذ الذكاء الاصطناعي لقرار أو حكم معين، للحد من مشكلة الصندوق الأسود وتمكين الشفافية.",
+          "برامج تدريبية لتعليم الطلاب كيفية كتابة الأكواد البرمجية للذكاء الاصطناعي.",
+          "نظام يقوم بتوليد صور ثلاثية الأبعاد لشرح الدروس العلمية."
+        ],
+        answer: "تقنيات تتيح للبشر فهم أسباب وكيفية اتخاذ الذكاء الاصطناعي لقرار أو حكم معين، للحد من مشكلة الصندوق الأسود وتمكين الشفافية."
+      },
+      {
+        id: 22,
+        title: "ينص مبدأ \"المساءلة\" (Accountability) في أخلاقيات الذكاء الاصطناعي على:",
+        options: [
+          "معاقبة نظام الذكاء الاصطناعي وحذفه فوراً عند حدوث خطأ حاسوبي.",
+          "تحديد الجهات والأفراد المسؤولين عن النظام وقراراته وآثاره، وإمكانية محاسبتهم وفق أدوارهم (سواء المطور أو المشغل أو المؤسسة).",
+          "إجبار جميع الشركات على نشر الشفرة البرمجية مجاناً للجميع.",
+          "منع استخدام البيانات الشخصية في أي تطبيق تجاري."
+        ],
+        answer: "تحديد الجهات والأفراد المسؤولين عن النظام وقراراته وآثاره، وإمكانية محاسبتهم وفق أدوارهم (سواء المطور أو المشغل أو المؤسسة)."
+      },
+      {
+        id: 23,
+        title: "أعدت إحدى المدارس نظاماً يعتمد على كاميرات التعرف على الوجوه لتسجيل حضور الطلاب تلقائياً عند البوابة، لكن أبدت بعض الأسر قلقها بشأن جمع صور أبنائهم وتخزينها. أي مبدأ أخلاقي يرتبط بهذه المخاوف بصفة رئيسية؟",
+        options: [
+          "مبدأ العدالة.",
+          "مبدأ الخصوصية وحماية البيانات (التعامل المناسب مع المعلومات الشخصية وحمايتها).",
+          "مبدأ الهلوسة.",
+          "مبدأ السرعة الحاسوبية."
+        ],
+        answer: "مبدأ الخصوصية وحماية البيانات (التعامل المناسب مع المعلومات الشخصية وحمايتها)."
+      },
+      {
+        id: 24,
+        title: "أي من الخيارات التالية يُعد الممارسة الأكثر فعالية للحد من التحيز الخوارزمي قبل نشر نظام الذكاء الاصطناعي؟",
+        options: [
+          "زيادة عدد طبقات الشبكة العصبية دون تغيير البيانات.",
+          "فحص بيانات التدريب للتأكد من تنوعها وتمثيلها العادل، واختبار نتائج النظام على فئات مختلفة لمعالجة أي تحيز.",
+          "الاعتماد على الحوسبة الطرفية بدلاً من الحوسبة السحابية.",
+          "التوقف عن استخدام الذكاء الاصطناعي في كافة التطبيقات الصناعية."
+        ],
+        answer: "فحص بيانات التدريب للتأكد من تنوعها وتمثيلها العادل، واختبار نتائج النظام على فئات مختلفة لمعالجة أي تحيز."
+      },
+      {
+        id: 25,
+        title: "يقتضي مبدأ \"الشفافية\" (Transparency) في الاستخدام المسؤول للذكاء الاصطناعي:",
+        options: [
+          "عدم الإفصاح عن وجود ذكاء اصطناعي للمستخدمين لتجنب إثارة قلقهم.",
+          "إتاحة معلومات واضحة ومناسبة عن النظام واستخدامه وطريقة اتخاذ القرار وحدوده.",
+          "جعل جميع خوارزميات الذكاء الاصطناعي تعمل بدون بيانات تدريب.",
+          "ضمان ألا يخطئ النظام في التنبؤ إطلاقاً بنسبة 100%."
+        ],
+        answer: "إتاحة معلومات واضحة ومناسبة عن النظام واستخدامه وطريقة اتخاذ القرار وحدوده."
+      }
+    ];
 
-    const modelAnswers = {
-        mcq_1: "الأربعينيات - الستينيات",
-        mcq_2: "عامين",
-        mcq_3: "الواقع الافتراضي (VR)",
-        mcq_4: "تقليل زمن الاستجابة لاتخاذ قرارات القيادة فوراً",
-        mcq_5: "العمل عن بُعد (Remote Work)",
-        mcq_6: "العقد الأول من الألفية (ظهور الآيفون)",
-        mcq_7: "يمكن أن تكون في حالة مزيج من (0) و(1) في نفس الوقت",
-        mcq_8: "استخدام رموز QR أو البطاقات المصرفية عبر الهاتف",
-        mcq_9: "العقد الثاني من الألفية فصاعداً",
-        mcq_10: "تأثيرات كمومية مثل النفق الكمومي وازدياد تيارات التسرب",
-        term_1: "قانون مور",
-        term_2: "الحوسبة الطرفية",
-        term_3: "الواقع المعزز",
-        term_4: "الكيوبيت",
-        term_5: "الدفع غير النقدي"
-    };
+    // 1. دالة التطهير وتوحيد الحروف العربية وتجاهل الهمزات والتشكيل
+    function normalizeArabic(text) {
+      if (!text) return "";
+      return text
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[أإآ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/[\u064B-\u0652]/g, '');
+    }
 
-    // إعداد العداد التنازلي لمدة 10 دقائق (600 ثانية)
-    let totalSeconds = 10 * 60;
+    // 2. دالة خلط المصفوفات عشوائياً (Fisher-Yates Shuffle)
+    function shuffleArray(array) {
+      let shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    // 3. توليد الأسئلة الـ 25 داخل الصفحة بعد خلط الأسئلة والخيارات
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      let html = '';
+
+      questionsData.forEach((q, index) => {
+        // خلط خيارات السؤال نفسه لزيادة العشوائية ومنع الغش
+        const randomizedOptions = shuffleArray(q.options);
+
+        html += `
+          <div class="question-card">
+            <div class="question-title">س${index + 1}: ${q.title}</div>
+            ${randomizedOptions.map(opt => `
+              <label class="option">
+                <input type="radio" name="q${q.id}" value="${opt.replace(/"/g, '&quot;')}" required>
+                <span>${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // 4. إعداد العداد الزمني (10 دقائق = 600 ثانية)
+    let timeRemaining = 10 * 60;
     let timerInterval = null;
+    let isSubmitted = false;
+
+    const timerClock = document.getElementById('timerClock');
 
     function startTimer() {
-        const timerText = document.getElementById('timerText');
-        const timerBox = document.getElementById('timerBox');
-
-        timerInterval = setInterval(() => {
-            totalSeconds--;
-
-            let minutes = Math.floor(totalSeconds / 60);
-            let seconds = totalSeconds % 60;
-
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-
-            timerText.innerText = `${minutes}:${seconds}`;
-
-            // التنبيه باللون الأحمر عند متبقي دقيقتين
-            if (totalSeconds <= 120) {
-                timerBox.classList.add('warning');
-            }
-
-            // انتهاء الوقت وتسليم الإجابات تلقائياً
-            if (totalSeconds <= 0) {
-                clearInterval(timerInterval);
-                alert('⏰ انتهى الوقت المحدد للاختبار (10 دقائق)! سيتم تسليم إجاباتك تلقائياً.');
-                
-                // إلغاء شرط الحقول الإلزامية حتى يتم التسليم التلقائي بدون منع
-                const requiredInputs = document.querySelectorAll('[required]');
-                requiredInputs.forEach(input => input.removeAttribute('required'));
-
-                document.getElementById('quizForm').requestSubmit();
-            }
-        }, 1000);
+      timerInterval = setInterval(() => {
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          alert('انتهى الوقت المخصص للاختبار (10 دقائق)! سيتم تسليم إجاباتك تلقائياً.');
+          autoSubmitQuiz();
+        } else {
+          timeRemaining--;
+          updateTimerDisplay();
+        }
+      }, 1000);
     }
 
-    // تشغيل العداد فور فتح الصفحة
-    window.onload = startTimer;
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      timerClock.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-    function cleanText(text) {
-        if (!text) return "";
-        return text.trim()
-            .replace(/[أإآ]/g, "ا")
-            .replace(/ة/g, "ه")
-            .replace(/\s+/g, " ");
+      if (timeRemaining <= 120) { // أخر دقيقتين يتحول للون الأحمر والتنبيه
+        timerClock.classList.add('danger');
+      }
     }
 
+    // 5. التصحيح التلقائي والمطابقة المرنة
+    function calculateGrade(formData) {
+      let score = 0;
+      let review = [];
+
+      questionsData.forEach(q => {
+        const userAns = formData[`q${q.id}`] || "لم يتم الإجابة";
+        const isCorrect = normalizeArabic(userAns) === normalizeArabic(q.answer);
+        
+        if (isCorrect) score++;
+
+        review.push({
+          title: q.title,
+          userAns: userAns,
+          correctAns: q.answer,
+          isCorrect: isCorrect
+        });
+      });
+
+      return { score, review };
+    }
+
+    function autoSubmitQuiz() {
+      if (isSubmitted) return;
+      document.getElementById('quizForm').dispatchEvent(new Event('submit'));
+    }
+
+    // 6. أحداث إرسال النموذج
     document.getElementById('quizForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+      e.preventDefault();
+      if (isSubmitted) return;
 
-        // إيقاف العداد عند التسليم
-        if (timerInterval) {
-            clearInterval(timerInterval);
-        }
+      isSubmitted = true;
+      clearInterval(timerInterval);
 
-        let score = 0;
-        const totalScore = 15;
-        const formData = new FormData(this);
-        const studentAnswers = {};
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'جاري التصحيح وتسجيل البيانات...';
 
-        for (let key in modelAnswers) {
-            const studentVal = formData.get(key) || "";
-            studentAnswers[key] = studentVal;
+      const form = document.getElementById('quizForm');
+      const studentName = form.studentName.value || "طالب بدون اسم";
 
-            const card = document.getElementById(`card_${key}`);
-            const correctTextDiv = document.getElementById(`ans_${key}`);
+      // تجميع إجابات الطالب
+      const formData = { studentName: studentName };
+      questionsData.forEach(q => {
+        formData[`q${q.id}`] = form[`q${q.id}`] ? form[`q${q.id}`].value : "";
+      });
 
-            let isCorrect = false;
+      // حساب الدرجة
+      const { score, review } = calculateGrade(formData);
+      formData.score = score;
 
-            if (key.startsWith('mcq_')) {
-                isCorrect = (studentVal === modelAnswers[key]);
-            } else {
-                isCorrect = (cleanText(studentVal) === cleanText(modelAnswers[key]));
-            }
+      // إرسال البيانات لجوجل شيت
+      if (SCRIPT_URL && SCRIPT_URL !== "ضع_رابط_WEB_APP_هنا") {
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        }).catch(err => console.error(err));
+      }
 
-            if (isCorrect) {
-                score++;
-                card.classList.add('correct-card');
-                card.classList.remove('incorrect-card');
-                correctTextDiv.style.display = 'none';
-            } else {
-                card.classList.add('incorrect-card');
-                card.classList.remove('correct-card');
-                correctTextDiv.style.display = 'block';
-            }
-        }
+      // عرض النتيجة وتفاصيل الأجوبة
+      form.style.display = 'none';
+      
+      const resultCard = document.getElementById('resultCard');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultScore = document.getElementById('resultScore');
+      const resultDetails = document.getElementById('resultDetails');
+      const reviewContainer = document.getElementById('reviewContainer');
 
-        document.getElementById('scoreText').innerText = `${score} / ${totalScore}`;
-        document.getElementById('resultBanner').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      const percentage = Math.round((score / 25) * 100);
+      resultScore.textContent = `${score} / 25`;
+      resultDetails.textContent = `النسبة المئوية: ${percentage}% | الطالب: ${studentName}`;
 
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.disabled = true;
-        submitBtn.innerText = 'تم إرسال الإجابات وترحيلها';
+      if (percentage >= 50) {
+        resultTitle.textContent = "🎉 مبروك! لقد اجتزت الاختبار بنجاح.";
+        resultCard.classList.remove('fail');
+      } else {
+        resultTitle.textContent = "⚠️ للأسف لم تجتز الاختبار. حاول مراجعة الدروس مجدداً.";
+        resultCard.classList.add('fail');
+      }
 
-        const payload = {
-            studentName: formData.get('studentName') || "طالب غير مسجل الاسم",
-            score: `${score} / ${totalScore}`,
-            answers: studentAnswers,
-            timestamp: new Date().toLocaleString('ar-EG')
-        };
+      let reviewHTML = '<h3 style="margin-bottom: 15px;">تفاصيل التقييم وإجابات الأسئلة (25 سؤال):</h3>';
+      review.forEach((item, idx) => {
+        reviewHTML += `
+          <div class="review-item ${item.isCorrect ? 'correct' : 'incorrect'}">
+            <strong>س${idx + 1}: ${item.title}</strong><br>
+            <span>الحالة: ${item.isCorrect ? '✓ إجابة صحيحة' : '✗ إجابة خاطئة'}</span><br>
+            <span>إجابتك: ${item.userAns}</span>
+            ${!item.isCorrect ? `<br><span>الإجابة النموذجية: ${item.correctAns}</span>` : ''}
+          </div>
+        `;
+      });
 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw3rioaSXIxUJZVaCzUKA1F3KF7HrWcg39LkFhrrj2OOZ5xmgjkaXBKPeCIxVVA_Pv0/exec'; {
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(() => {
-                console.log('تم إرسال البيانات إلى Google Sheets بنجاح');
-            }).catch(err => console.error('خطأ في الإرسال:', err));
-        }
+      reviewContainer.innerHTML = reviewHTML;
+      resultCard.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-</script>
 
+    // تشغيل الصفحة
+    window.onload = function() {
+      // خلط ترتيب الأسئلة عشوائياً عند فتح الصفحة
+      questionsData = shuffleArray(questionsData);
+      renderQuestions();
+      startTimer();
+    };
+  </script>
 </body>
 </html>
